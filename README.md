@@ -37,9 +37,9 @@ PUT       api/products/{id} ............................................... Api\
 }
 ```
 
-# Command
+# Out of stock command
 
-There's a command, that send an email (through a job) informing the products that are out of stock.
+There's a command, that sends an email (through a job) informing the products that are out of stock.
 ```
 php artisan app:check-out-of-stock-command
 ```
