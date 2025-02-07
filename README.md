@@ -36,3 +36,10 @@ PUT       api/products/{id} ............................................... Api\
     "status": "draft"
 }
 ```
+
+# Command
+
+There's a command, that send an email (through a job) informing the products that are out of stock.
+```
+php artisan app:check-out-of-stock-command
+```
