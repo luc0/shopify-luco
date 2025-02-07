@@ -20,7 +20,6 @@ class ProductController extends Controller
         Borrar lo viejo:
         - shopify-app config.
         - lo comentado en routes, etc.
-        - migration
         RATE LIMIT:
         - ver rate_limits? https://shopify.dev/docs/api/partner#rate_limits
         ERROR CODES:
@@ -42,7 +41,7 @@ class ProductController extends Controller
     }
 
     public function update(ProductData $productData) {
-        return config('shopify.api.products') . '/' . $productData->id . '.json';
+        // fix this
         return $this->productService->update($productData);
     }
 }
