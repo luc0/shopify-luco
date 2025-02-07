@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\DTOs\ProductData;
 use App\Http\Controllers\Controller;
 use App\Models\Product;
-use App\Services\ProductService;
+use App\Services\ShopifyProductService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
@@ -13,35 +13,60 @@ use Illuminate\Support\Facades\Log;
 
 class ProductController extends Controller
 {
+    private ShopifyProductService $productService;
 
-    /* TODO:
-        ShopifyClass
-        - la response podria ser un resource de laravel o un response. Con el formato de respuesta del product.
-        Borrar lo viejo:
-        - shopify-app config.
-        - lo comentado en routes, etc.
-        RATE LIMIT:
-        - ver rate_limits? https://shopify.dev/docs/api/partner#rate_limits
-        ERROR CODES:
-        - manejar errores: https://shopify.dev/docs/api/partner#status_and_error_codes
-    */
-    private ProductService $productService;
-
-    public function __construct(ProductService $productService)
+    public function __construct(ShopifyProductService $productService)
     {
         $this->productService = $productService;
     }
 
     public function list() {
-        return $this->productService->getProducts();
+        try {
+            $data = $this->productService->getProducts();
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Error communicating with the external service..',
+            ], 500);
+        }
+
+        return response()->json([
+            'success' => true,
+            'data' => $data,
+        ]);
     }
 
     public function create(ProductData $productData) {
-        return $this->productService->create($productData);
+        try {
+            return $this->productService->create($productData);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Error communicating with the external service..',
+            ], 500);
+        }
+
+        return response()->json([
+            'success' => true,
+            'data' => $data,
+        ]);
     }
 
-    public function update(ProductData $productData) {
-        // fix this
-        return $this->productService->update($productData);
+    public function update(Request $request) {
+        $productData = ProductData::from($request->all());
+
+        try {
+            return $this->productService->update($productData);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Error communicating with the external service..',
+            ], 500);
+        }
+
+        return response()->json([
+            'success' => true,
+            'data' => $data,
+        ]);
     }
 }

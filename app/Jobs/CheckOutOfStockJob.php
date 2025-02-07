@@ -3,7 +3,7 @@
 namespace App\Jobs;
 
 use App\Mail\OutOfStockMail;
-use App\Services\ProductService;
+use App\Services\ShopifyProductService;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Foundation\Queue\Queueable;
@@ -26,7 +26,7 @@ class CheckOutOfStockJob implements ShouldQueue
 
     public function handle()
     {
-        $shopifyService = app(ProductService::class);
+        $shopifyService = app(ShopifyProductService::class);
         $products = $shopifyService->getProducts();
 
         $outOfStockProducts = [];

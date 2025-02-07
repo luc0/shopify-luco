@@ -5,7 +5,7 @@ namespace App\Services;
 use App\DTOs\ProductData;
 use Illuminate\Support\Facades\Http;
 
-class ProductService
+class ShopifyProductService
 {
     public function getProducts() {
         $response = Http::get(config('shopify.api.products') . '.json');
